@@ -4,7 +4,7 @@
     class="border border-amber-800 px-4 pb-4 pt-5 rounded-md hover:bg-amber-100 transition-all group"
   >
     <div class="flex justify-between relative">
-      <p class="text-amber-800 font-bold text-lg line-clamp-2">
+      <p class="text-amber-800 font-bold text-lg line-clamp-2 w-[95%]">
         {{ item.name }}
       </p>
       <button
@@ -36,17 +36,23 @@
       {{ item.description }}
     </p>
     <p class="text-end mt-4 text-sm text-amber-900 font-semibold">
-      {{ formatDate(item.createdAt) }}
+      {{ formattedDate }}
     </p>
   </li>
 </template>
 
 <script lang="ts" setup>
 import type { Task } from "@/types/Task";
-import { formatDate } from "@/utils/DateFormatter";
-import { ref } from "vue";
+import { useDateFormatter } from "@/composables/useDateFormatter";
+import { ref ,computed } from "vue";
 
 const toggleOpen = ref(false);
+
+const dateFormatter = useDateFormatter()
+
+const formattedDate = computed(() => {
+  return dateFormatter.format(props.item.createdAt)
+})
 
 const openOption = () => {
   toggleOpen.value = true;
